@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Muñequita ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Corazones flotantes */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float-up 10s infinite ease-in;
+            opacity: 0;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor principal */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Título */
+        .title {
+            text-align: center;
+            color: white;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Carta interactiva */
+        .letter-container {
+            perspective: 1000px;
+            margin: 40px auto;
+            width: fit-content;
+        }
+
+        .letter {
+            width: 600px;
+            max-width: 90vw;
+            height: 500px;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe5f0 100%);
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .letter.open {
+            transform: rotateY(180deg);
+        }
+
+        .letter-front, .letter-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letter-back {
+            justify-content: flex-start;
+            padding-top: 30px;
+            overflow-y: auto;
+        }
+
+        .letter-front {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: white;
+        }
+
+        .letter-back {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe5f0 100%);
+            transform: rotateY(180deg);
+            color: #8b4789;
+            overflow-y: auto;
+        }
+
+        .envelope-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .click-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .letter-content {
+            text-align: left;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .letter-content h2 {
+            color: #d946a6;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .letter-content p {
+            margin-bottom: 15px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+            font-size: 1.2em;
+            color: #d946a6;
+        }
+
+        /* Galería de fotos - MEJORADA */
+        .gallery-section {
+            margin-top: 60px;
+            margin-bottom: 80px;
+        }
+
+        .gallery-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Contenedor decorativo del carousel */
+        .carousel-wrapper {
+            position: relative;
+            width: 850px;
+            max-width: 95vw;
+            margin: 0 auto;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 30px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Decoración de esquinas */
+        .carousel-wrapper::before,
+        .carousel-wrapper::after {
+            content: '✨';
+            position: absolute;
+            font-size: 2em;
+            color: rgba(255, 255, 255, 0.8);
+            animation: sparkle 2s infinite;
+        }
+
+        .carousel-wrapper::before {
+            top: -10px;
+            left: -10px;
+        }
+
+        .carousel-wrapper::after {
+            bottom: -10px;
+            right: -10px;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Corazones decorativos */
+        .carousel-heart {
+            position: absolute;
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .heart-1 {
+            top: -15px;
+            right: 40%;
+            animation: pulse 2s infinite;
+        }
+
+        .heart-2 {
+            bottom: -15px;
+            left: 40%;
+            animation: pulse 2s infinite 0.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 2px 8px rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, 
+                rgba(255, 192, 203, 0.1) 0%, 
+                rgba(255, 182, 193, 0.1) 50%, 
+                rgba(255, 192, 203, 0.1) 100%);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Marco interno decorativo */
+        .carousel::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.6s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, 
+                rgba(255, 255, 255, 0.05) 0%, 
+                rgba(255, 192, 203, 0.05) 100%);
+        }
+
+        .carousel-item img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            filter: brightness(0.98) contrast(1.05);
+            margin: auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-item img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Botones del carousel mejorados */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(255, 192, 203, 0.95) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            font-size: 2em;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s;
+            z-index: 10;
+            color: #8b4789;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 1) 0%, 
+                rgba(255, 182, 193, 1) 100%);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        /* Indicadores mejorados */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .indicator.active {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            transform: scale(1.4);
+            box-shadow: 0 0 10px rgba(255, 154, 158, 0.8);
+        }
+
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.2);
+        }
+
+        /* Control de música */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(255, 192, 203, 0.95) 100%);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .music-control:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 1) 0%, 
+                rgba(255, 182, 193, 1) 100%);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .music-icon {
+            font-size: 1.5em;
+        }
+
+        .music-text {
+            font-weight: bold;
+            color: #8b4789;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2em;
+            }
+
+            .letter {
+                width: 90vw;
+                height: auto;
+                min-height: 400px;
+            }
+
+            .carousel-wrapper {
+                padding: 15px;
+            }
+
+            .carousel {
+                height: 450px;
+            }
+
+            .letter-content {
+                font-size: 1em;
+            }
+
+            .gallery-title {
+                font-size: 2em;
+            }
+
+            .carousel-btn {
+                font-size: 1.5em;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Corazones flotantes -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Título -->
+        <h1 class="title">Para la Niña de Mis Ojos Hermosos 💕</h1>
+
+        <!-- Carta interactiva -->
+        <div class="letter-container">
+            <div class="letter" id="letter">
+                <div class="letter-front">
+                    <div class="envelope-icon">💌</div>
+                    <div class="click-text">Haz clic para abrir</div>
+                </div>
+                <div class="letter-back">
+                    <div class="letter-content">
+                        <h2>Mi Piciosa Hemosha 🤍</h2>
+                        
+                        <p>
+                            Hoooola mi muñequita piciosa, no hay palabras suficientes para expresar todo lo que significas para mí,
+                            y por eso decidí hacerte este pequeño detalle pero que va con todo mi amor.
+                            Desde el momento en que apareciste en mi vida, todo cambió. Tus ojos hermosos iluminan 
+                            mis días más oscuros, y tu sonrisa hermosa hace que todo valga la pena.
+                            Sé que a veces te enojonas por mis bromas y tonterías, pero eso solo me hace quererte más, porque cada faceta 
+                            tuya me fascina. Tu carisma, tu forma de ser, la manera en que me haces sentir... 
+                            todo en ti es perfecto para mí.
+                        </p>
+                        <p>
+                            Mi vida, tu cuerpo hermoso es solo el reflejo de la belleza que llevas por dentro. 
+                            Eres fuerte, eres increíble, conocerte pudo ser cuestión de suerte o una simple coincidencia,
+                            pero prefiero interpretarlo como un regalo de la vida. Eres mi regalo más preciado, mi tesoro más valioso.
+                        </p>
+                        <p>
+                            Cada momento a tu lado es un regalo que atesoro. Cada risa, cada abrazo, cada mirada... 
+                            todo se queda grabado en mi memoria como los momentos más preciosos de mi vida. 
+                        </p>
+                        <p>
+                            Nunca me ha gustado deber, pero lo cierto es que en deuda contigo he caído.
+                            ¿Por qué?, te preguntarás, bueno porque a ti te debo la sonrisa tonta que a mi rostro viene cuando pienso en ti,
+                            te debo la tranquilidad que siento a tu lado, te debo ese impulso por ser mejor
+                            para ti y no darte un error, te debo el que hayas tornado una rota melodía y
+                            la convirtieras en alegre poesía, te debo que en mí hayas despertado el
+                            amor que había dado por perdido, así que sí, te debo y mucho, y deberte eso
+                            para mí es una deuda de vida.
+                        </p>
+                        <p>
+                            Eres lo mejor que me pasó, lo mejor que tengo, y si me dejas, me quedaré. Hoy, mañana, cuando todo sea difícil, cuando el mundo pese más. Mis brazos estarán abiertos,
+                            siempre habrá un abachoooteee de oso, un bechoooteeee y un besito en la frente, la cuestión es que conmigo siempre está un lugar para ti. Así que puedes dormir todas las noches
+                            tranquila,
+                            mi pequeña, mi gran amor, yo seguiré aquí, amándote otro día más.
+                        </p>
+                        <p>
+                            Quiero que sepas que siempre estaré aquí para ti, en las buenas y en las malas, 
+                            en tus días felices y en aquellos en los que necesites un hombro en el que apoyarte, siempre te lo he dicho...
+                            Eres mi compañera, mi confidente, mi amor eterno. No importa lo que el futuro nos depare, 
+                            siempre te amaré con todo mi corazón.
+                        </p>
+                        <p>
+                            Porque tú eres mi todo, mi mundo, mi inspiración. Eres la niña de mis ojos hermosos 
+                            y la dueña de mi alma, mente y ser.
+                        </p>
+                        <p class="signature">
+                            Con todo mi amor para ti,<br>
+                            Tu colochito picioso 🤍
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galería de fotos MEJORADA -->
+        <div class="gallery-section">
+            <h2 class="gallery-title">HAPPY VALENTINES DAY MY LOVE 🤍✨</h2>
+            
+            <div class="carousel-wrapper">
+                <!-- Corazones decorativos -->
+                <div class="carousel-heart heart-1">💖</div>
+                <div class="carousel-heart heart-2">💕</div>
+                
+                <div class="carousel">
+                    <div class="carousel-inner" id="carouselInner">
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.09 PM.jpeg" alt="Momento 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.10 PM (1).jpeg" alt="Momento 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.10 PM (2).jpeg" alt="Momento 3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.10 PM.jpeg" alt="Momento 4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.11 PM (1).jpeg" alt="Momento 5">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.11 PM (2).jpeg" alt="Momento 6">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.11 PM.jpeg" alt="Momento 7">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.13 PM.jpeg" alt="Momento 8">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.12 PM (1).jpeg" alt="Momento 9">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.12 PM (2).jpeg" alt="Momento 10">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.12 PM.jpeg" alt="Momento 11">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.13 PM (1).jpeg" alt="Momento 12">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ella-y-yoo/WhatsApp Image 2026-02-13 at 8.30.13 PM (2).jpeg" alt="Momento 13">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide()">❮</button>
+                    <button class="carousel-btn next" onclick="nextSlide()">❯</button>
+                    <div class="carousel-indicators" id="indicators"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Control de música -->
+    <div class="music-control" onclick="toggleMusic()">
+        <span class="music-icon" id="musicIcon">🎵</span>
+        <span class="music-text" id="musicText">Reproducir música</span>
+    </div>
+
+    <!-- Audio -->
+    <audio id="backgroundMusic" loop>
+        <source src="ella-y-yoo/Stand By Me.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Crear corazones flotantes
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            
+            const colors = ['❤️', '💕', '💖', '💗', '💓', '💝'];
+            heart.innerHTML = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.getElementById('heartsContainer').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 15000);
+        }
+
+        // Generar corazones continuamente
+        setInterval(createHeart, 300);
+
+        // Carta interactiva
+        document.getElementById('letter').addEventListener('click', function() {
+            this.classList.toggle('open');
+        });
+
+        // Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const totalSlides = slides.length;
+        const carouselInner = document.getElementById('carouselInner');
+        const indicatorsContainer = document.getElementById('indicators');
+
+        // Crear indicadores
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            if (i === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel (15 segundos)
+        setInterval(nextSlide, 15000);
+
+        // Control de música
+        const music = document.getElementById('backgroundMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.textContent = '🎵';
+                musicText.textContent = 'Reproducir música';
+            } else {
+                music.play();
+                musicIcon.textContent = '⏸️';
+                musicText.textContent = 'Pausar música';
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
+</body>
+</html>
